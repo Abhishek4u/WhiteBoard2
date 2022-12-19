@@ -1,0 +1,136 @@
+body {
+    overflow: hidden;
+    text-align: center;
+}
+
+.editor-container{
+    display: none;
+    position: absolute;
+    right : 10px;
+    height: calc(88vh);
+    width: calc(40vw);
+    min-width: 37rem;
+    background-color: aquamarine;
+    border-radius: 4px;
+}
+
+#editor {
+    height: 95%;
+    width: 100%;
+    margin: 0;
+    position: relative;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    border-radius: 0px 0px 4px 4px;
+    z-index: 1;
+}
+
+.editor-separator {
+    height: 0.5%;
+    width: auto;
+    background-color: rgb(8, 21, 66);
+    /* border: 3px dotted rgb(73, 52, 52); */
+}
+
+.editor_top-bar {
+    height: 4.5%;
+    min-height: 1.99rem;
+    width: 100%;
+    background-color: aquamarine;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    border-top: 2px solid lightcoral;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    /* padding: 0px 2px; */
+}
+
+.editor_top-bar>div {
+    height: 102%;
+    /* width: 49.9%; */
+    display: flex;
+    align-items: center;
+    /* justify-content: space-evenly; */
+}
+
+
+.files-bar{
+    /* background-color: orange; */
+    width: 30%;
+}
+
+.options-bar{
+    background-color: crimson;
+    width: 70%;
+    border-top-right-radius: 4px;
+}
+
+.files-bar>div, .options-bar>div{
+    border-radius: 5px;
+    padding: 2px;
+    margin: 2px 10px;
+    min-width: 5rem;
+    height: 70%;
+}
+
+.file-btn{
+    width: 95%;
+    background-color: rgb(96, 228, 140);
+    border-top: 2px solid crimson;
+}
+
+
+.file-btn>span {
+    min-width: 40px;
+    height: 98%;
+    display: inline-block;
+}
+
+.file-name{
+    width: 60%;
+}
+
+.file-extension{
+    width: 30%;
+    border-left: 1px solid red;
+    /* background-color: grey; */
+}
+
+
+
+
+.options-bar-btn{
+    /* background-color: rgb(196, 32, 65);  */
+    border-right: 1px solid black;
+    color: white;
+    border-radius: 0px !important;
+    padding-left: 0px !important;
+}
+
+.lang-selector{
+    border: none !important;
+}
+
+select{
+    background-color: #fff;
+    border-radius: 2px;
+    text-align: center;
+    height: 80%;
+}
+
+
+.file-btn>span>input {
+    background-color: rgba(255, 255, 255, 0);
+    width: 90% ;
+    border: none;
+    text-align: center;
+    margin: 2px;
+}
+
+.pointer-icon{
+    cursor: pointer;
+}

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhiteBoard</title>
+    <link rel="shortcut icon" href="./Images/board.svg" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="editor.css">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+
+<body>
+
+    <div class="tool-bar">
+        <div class="main-fxn sandwich">
+            <img src="./Images/options.svg" class="tool-img main-fxn-change-color" id="expand">
+        </div>
+
+        <div class="main-fxn chat">
+            <img src="./Images/chat.svg" class="tool-img main-fxn-change-color">
+        </div>
+
+        <div class="main-fxn code-editor">
+            <img src="./Images/code-editor.svg" class="tool-img main-fxn-change-color">
+        </div>
+
+        <div class="tool-panel">
+            <div class="tool" onclick="changeSize()">
+                <img src="./Images/pencil.svg" class="tool-img change-color" id="pencil" onclick="handleTool('pencil')">
+
+                <div class="tool-options" id="pencil-options">
+
+                    <div class="slider" onclick="changeSize()">
+                        <!-- <input type="range" max="100" min="4" step="2"> -->
+                    </div>
+
+                    <div class="colors">
+                        <div class="color red" onclick="changeColor('#ff1a1a')"></div>
+                        <div class="color green" onclick="changeColor('#00ff00')"></div>
+                        <div class="color blue" onclick="changeColor('#00ccff')"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool" onclick="changeSize2()">
+
+                <img src="./Images/eraser.svg" class="tool-img change-color" id="eraser" onclick="handleTool('eraser')">
+                <div class="tool-options" id="eraser-options">
+                    <div class="slider eraserSlider" onclick="changeSize2()">
+                        <!-- <input type="range" max="100" min="4" step="2"> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool">
+                <img src="./Images/sticky-note.svg" class="tool-img change-color" id="sticky" onclick="handleTool('sticky')">
+            </div>
+
+            <div class="tool">
+                <img src="./Images/upload2.svg" class="tool-img change-color" id="upload" onclick="handleTool('upload')">
+                <!-- <input type="file" id="acceptImg" style="display: none;"> -->
+            </div>
+
+            <div class="tool">
+                <img src="./Images/undo.svg" class="tool-img change-color" id="undo" onclick="handleTool('undo')">
+            </div>
+
+            <div class="tool">
+                <img src="./Images/redo.svg" class="tool-img change-color" id="redo" onclick="handleTool('redo')">
+            </div>
+
+            <div class="tool">
+                <img src="./Images/download_board.svg" class="tool-img change-color" id="download" onclick="handleTool('download')">
+            </div>
+
+        </div>
+    </div>
+
+    <div id="socketRoom">
+        <h3>Enter the ID</h3>
+        <h4 style="font-style: italic; font-weight: bold;">Note: Same ID should be
+            <br>used on other connections
+        </h4>
+
+        <input type="text" class="circular-input" id="name" placeholder="Name">
+        <input type="text" class="circular-input" id="id" placeholder="ID">
+
+        <div id="socketButtons">
+            <button id="sckt">Connnect</button>
+            <button id="disconnect">Disconnect</button>
+        </div>
+        <h4 style="color: red;" id="socketId">You are not connected</h4>
+    </div>
+
+    <div id="chat-room">
+
+        <div id="chat-title">
+            <h4>Chat Room</h4>
+            <h4>ID : None</h4>
+        </div>
+
+        <div id="chat-area">
+
+            <div id="msg-container">
+
+                <div id="time"></div>
+
+                <div id="chatBot">
+                    <h4> Hi Welcome to WhiteBoard Chat</h4>
+                </div>
+
+            </div>
+
+            <div id="send-msg">
+                <input type="text" id="msgToSend" class="circular-input" placeholder="Enter your message here">
+                <button id="send" type="submit"><img src="./Images/send-message.svg"
+                        style="max-height: 80%;">Send</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="editor-container">
+
+        <div class="editor_top-bar">
+
+            <div class="files-bar">
+                <div class="file-btn">
+                    <span class="file-name"><input placeholder="File-Name"></span>
+
+                    <span class="file-extension"><input placeholder=".extnsn"></span>
+                </div>
+            </div>
+
+            <div class="options-bar">
+                <div class="open-file options-bar-btn pointer-icon" onclick=openFile()>
+                    Open
+                    <input type="file" id="code-file-opener" style="display: none;">
+                </div>
+                <div class="save-file options-bar-btn pointer-icon" onclick=saveFile()>Save </div>
+                <div class="options-bar-btn lang-selector">Language </div>
+
+                <select onchange="changeExtension(this.value);">
+                    <!-- onclick does not work in chrome so use onchange -->
+                    <option value="ace/mode/c_cpp" >C / C++</option>
+                    <option value="ace/mode/java" >Java</option>
+                    <option value="ace/mode/javascript" >JavaScript</option>
+                    <option value="ace/mode/json" >JSON</option>
+                    <option value="ace/mode/python" >Python</option>
+                    <option value="ace/mode/css" >CSS</option>
+                    <option value="ace/mode/html" >HTML</option>
+                </select>
+            </div>
+        </div>
+        <div class="editor-separator"></div>
+        <div id="editor"></div>
+    </div>
+
+    <canvas class="board"></canvas>
+
+    <script>
+
+        let board = document.querySelector(".board");
+
+        board.height = window.innerHeight - 85;
+        board.width = window.innerWidth - 10;
+
+        // content rendering engine -  2d, 3d, webgl
+        let ctx = board.getContext("2d");
+
+        window.addEventListener("resize", function () {
+            board.height = window.innerHeight;
+            board.width = window.innerWidth;
+            // when window is resized
+        })
+
+    </script>
+
+    <!-- client side scripting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <script>
+        const socket = io.connect("https://whiteboard-live.herokuapp.com/");
+
+        // const socket = io.connect("http://localhost:3000");  //For offline
+
+    </script>
+
+    <script src="workflow.js"></script>
+    <script src="jquery.js"></script>
+
+    <script src="utility.js"></script>
+    <script src="img.js"></script>
+    <script src="tools.js"></script>
+    <script src="sticky.js"></script>
+    <script src="canvas.js"></script>
+    
+    <script src="editor/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="editor.js"></script>
+    <script src="editor-fxns.js"></script>
+    <script src="editorSocketFxns.js"></script>
+    
+    <script src="receiver.js"></script>
+
+</body>
+
+</html>
