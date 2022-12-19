@@ -170,8 +170,8 @@ function sendTheMessage() {
         div.classList.add("msg");
         let msgPara = msg.value;
 
-        let hours = new Date().getHours() + "";
-        let minutes = new Date().getMinutes() + "";
+        let hours = new Date().getHours().toString() + "";
+        let minutes = new Date().getMinutes().toString() + "";
 
         hours = hours.length == 1 ? 0 + hours : hours;
         minutes = minutes.length == 1 ? 0 + minutes : minutes;
